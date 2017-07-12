@@ -1,8 +1,8 @@
 {
     "version": "1.0.0",
     "summary": "Example using `elm-webpack-loader`.",
-    "repository": "https://github.com/moarwick/elm-webpack-starter.git",
-    "license": "MIT",
+    "repository": "https://github.com/jobseekerltd/je-elm-ui.git",
+    "license": "none",
     "source-directories": [
         "src/elm"
     ],
@@ -12,6 +12,7 @@
         "elm-lang/html": "2.0.0 <= v < 3.0.0",
         "elm-lang/http": "1.0.0 <= v < 2.0.0",
         "evancz/elm-markdown": "3.0.1 <= v < 4.0.0",
+        "evancz/url-parser": "2.0.1 <= v < 3.0.0",
         "rundis/elm-bootstrap": "2.0.0 <= v < 3.0.0"
 
     },
