@@ -29,7 +29,12 @@ type Route
 
 route : Parser (Route -> a) a
 route =
-    UrlParser.map Search (UrlParser.s "j" <?> stringParam "q" <?> stringParam "l")
+    oneOf
+        [ UrlParser.map Search (UrlParser.s "j" <?> stringParam "q" <?> stringParam "l")
+        , UrlParser.map Category (UrlParser.string </> UrlParser.s "-jobs")
+        , UrlParser.map Location (UrlParser.s "jobs-in-" </> UrlParser.string)
+        , UrlParser.map CategoryInLocation (UrlParser.string </> UrlParser.s "-jobs-in-" </> UrlParser.string)
+        ]
 
 
 type alias Model =
