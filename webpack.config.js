@@ -113,6 +113,9 @@ if (isProd === true) {
                 to: 'static/img/'
             }, {
                 from: 'src/favicon.ico'
+            }, {
+              from: 'src/j',
+              to: 'j'
             }]),
 
             // extract CSS into a separate file
