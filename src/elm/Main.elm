@@ -1,63 +1,104 @@
 module Main exposing (..)
+
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing ( onClick )
-
--- component import example
-import Components.Hello exposing ( hello )
+import Navigation
+import UrlParser exposing ((<?>), (</>), s, stringParam, Parser, map, parsePath)
+import Bootstrap.Grid as Grid
 
 
 -- APP
-main : Program Never Int Msg
+
+
+main : Program Never Model Msg
 main =
-  Html.beginnerProgram { model = model, view = view, update = update }
+    Navigation.program UrlChange { init = init, view = view, update = update, subscriptions = (\_ -> Sub.none) }
+
 
 
 -- MODEL
-type alias Model = Int
 
-model : number
-model = 0
+
+type Route
+    = Search (Maybe String) (Maybe String)
+    | NotSearch
+
+
+route : Parser (Route -> a) a
+route =
+    UrlParser.map Search (UrlParser.s "j" <?> stringParam "q" <?> stringParam "l")
+
+
+type alias Model =
+    { keywords : String
+    , location : String
+    }
+
+
+init : Navigation.Location -> ( Model, Cmd Msg )
+init location =
+    let
+        parsedRoute =
+            case parsePath route location of
+                Nothing ->
+                    NotSearch
+
+                Just route ->
+                    route
+
+        kw =
+            case parsedRoute of
+                Search Nothing _ ->
+                    "NANA"
+
+                Search (Just value) _ ->
+                    value
+
+                NotSearch ->
+                    "NotSearchs"
+
+        loc =
+            case parsedRoute of
+                Search _ Nothing ->
+                    "NANA"
+
+                Search _ (Just value) ->
+                    value
+
+                NotSearch ->
+                    "NotSearch"
+    in
+        ( { keywords = kw, location = loc }, Cmd.none )
+
 
 
 -- UPDATE
-type Msg = NoOp | Increment
 
-update : Msg -> Model -> Model
+
+type Msg
+    = UrlChange Navigation.Location
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case msg of
-    NoOp -> model
-    Increment -> model + 1
+    case msg of
+        UrlChange location ->
+            ( model, Cmd.none )
+
 
 
 -- VIEW
--- Html is defined as: elem [ attribs ][ children ]
--- CSS can be applied via class names or inline style attrib
+
+
 view : Model -> Html Msg
 view model =
-  div [ class "container", style [("margin-top", "30px"), ( "text-align", "center" )] ][    -- inline CSS (literal)
-    div [ class "row" ][
-      div [ class "col-xs-12" ][
-        div [ class "jumbotron" ][
-          img [ src "static/img/elm.jpg", style styles.img ] []                             -- inline CSS (via var)
-          , hello model                                                                     -- ext 'hello' component (takes 'model' as arg)
-          , p [] [ text ( "Elm Webpack Starter" ) ]
-          , button [ class "btn btn-primary btn-lg", onClick Increment ] [                  -- click handler
-            span[ class "glyphicon glyphicon-star" ][]                                      -- glyphicon
-            , span[][ text "FTW!" ]
-          ]
+    Html.form []
+        [ Grid.container []
+            [ Grid.row []
+                [ Grid.col [] [ h1 [] [ text "TechJobs Australia" ] ]
+                , Grid.col [] [ label [] [ text "What" ], input [ type_ "text", value model.keywords ] [] ]
+                , Grid.col [] [ label [] [ text "Where" ], input [ type_ "text", value model.location ] [] ]
+                , Grid.col [] [ input [ type_ "submit" ] [ text "Submit" ] ]
+                ]
+            ]
         ]
-      ]
-    ]
-  ]
-
-
--- CSS STYLES
-styles : { img : List ( String, String ) }
-styles =
-  {
-    img =
-      [ ( "width", "33%" )
-      , ( "border", "4px solid #337AB7")
-      ]
-  }
