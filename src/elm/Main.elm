@@ -21,9 +21,9 @@ main =
 
 type Route
     = Search (Maybe String) (Maybe String)
-    | Category (Maybe String)
-    | Location (Maybe String)
-    | CategoryInLocation (Maybe String) (Maybe String)
+    | Category String
+    | Location String
+    | CategoryInLocation String String
     | NotSearch
 
 
@@ -62,23 +62,14 @@ init location =
                 Search (Just value) _ ->
                     value
 
-                Category Nothing ->
-                    "N/A"
-
-                Category (Just category) ->
+                Category category ->
                     category
 
-                Location Nothing ->
+                Location location ->
                     "N/A"
 
-                Location (Just location) ->
-                    "N/A"
-
-                CategoryInLocation (Just category) _ ->
+                CategoryInLocation category _ ->
                     category
-
-                CategoryInLocation Nothing _ ->
-                    "N/A"
 
                 NotSearch ->
                     "NotSearchs"
@@ -91,20 +82,14 @@ init location =
                 Search _ (Just value) ->
                     value
 
-                Location Nothing ->
-                    "N/A"
-
-                Location (Just location) ->
+                Location location ->
                     location
 
                 Category _ ->
                     "N/A"
 
-                CategoryInLocation _ (Just location) ->
+                CategoryInLocation _ location ->
                     location
-
-                CategoryInLocation _ Nothing ->
-                    "N/A"
 
                 NotSearch ->
                     "NotSearch"
