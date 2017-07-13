@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Navigation
 import UrlParser exposing ((<?>), (</>), s, stringParam, Parser, map, parsePath)
+import SeoParser
 import Bootstrap.Grid as Grid
 
 
@@ -21,20 +22,12 @@ main =
 
 type Route
     = Search (Maybe String) (Maybe String)
-    | Category String
-    | Location String
-    | CategoryInLocation String String
     | NotSearch
 
 
 route : Parser (Route -> a) a
 route =
-    UrlParser.oneOf
-        [ UrlParser.map Search (UrlParser.s "j" <?> stringParam "q" <?> stringParam "l")
-        , UrlParser.map Category (UrlParser.string </> UrlParser.s "-jobs")
-        , UrlParser.map Location (UrlParser.s "jobs-in-" </> UrlParser.string)
-        , UrlParser.map CategoryInLocation (UrlParser.string </> UrlParser.s "-jobs-in-" </> UrlParser.string)
-        ]
+    UrlParser.map Search (UrlParser.s "j" <?> stringParam "q" <?> stringParam "l")
 
 
 type alias Model =
@@ -49,7 +42,7 @@ init location =
         parsedRoute =
             case parsePath route location of
                 Nothing ->
-                    NotSearch
+                    SeoParser.parsePath location
 
                 Just route ->
                     route
@@ -62,17 +55,17 @@ init location =
                 Search (Just value) _ ->
                     value
 
-                Category category ->
+                SeoParser.Category category ->
                     category
 
-                Location location ->
+                SeoParser.Location location ->
                     "N/A"
 
-                CategoryInLocation category _ ->
+                SeoParser.CategoryInLocation category _ ->
                     category
 
-                NotSearch ->
-                    "NotSearchs"
+                SeoParser.NotSeo ->
+                    "NotSearch"
 
         loc =
             case parsedRoute of
@@ -82,16 +75,16 @@ init location =
                 Search _ (Just value) ->
                     value
 
-                Location location ->
+                SeoParser.Location location ->
                     location
 
-                Category _ ->
+                SeoParser.Category _ ->
                     "N/A"
 
-                CategoryInLocation _ location ->
+                SeoParser.CategoryInLocation _ location ->
                     location
 
-                NotSearch ->
+                SeoParser.NotSeo ->
                     "NotSearch"
     in
         ( { keywords = kw, location = loc }, Cmd.none )
