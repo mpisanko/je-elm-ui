@@ -80,6 +80,9 @@ init location =
         parsedRoute =
             parseSearchUrl location
 
+        d =
+            Debug.log "parsedRoute" parsedRoute
+
         kw =
             case parsedRoute of
                 Search Nothing _ ->
