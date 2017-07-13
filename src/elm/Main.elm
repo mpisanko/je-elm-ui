@@ -17,6 +17,7 @@ import Data.SearchRequest as SearchRequest
 import Data.Job as Job
 import Request.Search as Search
 import Views.JobRow as JobRow
+import Views.Header as Header
 
 
 -- APP
@@ -187,7 +188,8 @@ view model =
                     loc.value
     in
         div []
-            [ Html.form []
+            [ Header.render
+            , Html.form []
                 [ Grid.container []
                     [ Grid.row []
                         [ Grid.col [ Col.md2 ] [ h1 [] [ text "TechJobs Australia" ] ]
