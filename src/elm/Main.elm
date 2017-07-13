@@ -86,29 +86,37 @@ init location =
         kw =
             case parsedRoute of
                 Search Nothing _ ->
-                    "NANA"
+                    ""
 
                 Search (Just value) _ ->
                     value
 
                 NotSearch ->
-                    "NotSearch"
+                    ""
 
         loc =
             case parsedRoute of
                 Search _ Nothing ->
-                    "NANA"
+                    ""
 
                 Search _ (Just value) ->
                     value
 
                 NotSearch ->
-                    "NotSearch"
+                    ""
+
+        cmd =
+            case parsedRoute of
+                NotSearch ->
+                    Cmd.none
+
+                _ ->
+                    Http.send InitialLocationResolution (LocationRequest.suggest loc "AU")
 
         searchRequest =
             SearchRequest.init
     in
-        ( { searchRequest = { searchRequest | query = kw, location = loc, chosenLocation = Nothing }, results = SearchNotPerformed }, Http.send InitialLocationResolution (LocationRequest.suggest loc "AU") )
+        ( { searchRequest = { searchRequest | query = kw, location = loc, chosenLocation = Nothing }, results = SearchNotPerformed }, cmd )
 
 
 
