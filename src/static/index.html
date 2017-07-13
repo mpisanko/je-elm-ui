@@ -3,41 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Jobs Australia</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <title>TechJobs Australia</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- <link rel="shortcut icon" type="image/x-icon" href="http://cdn1.jora.com/assets/favicon-a22b6359d43f0a4c2464820bed9f1cf3.ico" /> -->
-
+    <link rel="shortcut icon" type="image/x-icon" href="http://cdn1.jora.com/assets/favicon-a22b6359d43f0a4c2464820bed9f1cf3.ico" />
 </head>
 <body class="site-au">
-    <div class="yui-t7">
-        <div id="bd">
-            <div class="main">
-                <div class="logo-container">
-                   <!-- <div id="logo"><img title="Jora" src="http://cdn1.jora.com/assets/au/logo-5849cff099caf96347f20f88ba7476ed.png" alt="Logo"></div> -->
-                </div>
-                <form action="/j" class="search-form" data-widget="SearchFormWidget" method="get">
-                    <div class="keyword col">
-                        <label class="keywords_lbl" for="q">What</label>
-                        <input type="text" name="q" id="q" value="" maxlength="512" class="sf ds acInput" placeholder="job title, keywords or company" data-widget="AutoCompleteWidget" data-url="/rpc/search_keywords/suggest" autocomplete="off">
-                    </div>
-                    <div class="location col">
-                        <label for="l">Where</label>
-                        <input type="text" name="l" id="l" value="" maxlength="64" class="sf ds acInput" autocomplete="off" placeholder="city, state or postcode" data-widget="AutoCompleteWidget" data-url="/rpc/search_locations/suggest">
-                    </div>
-                    <div class="search col">
-                        <input type="hidden" name="sp" id="sp" value="homepage">
-                        <input type="submit" value="Search Jobs" id="fj" class="button">
-                    </div>
-                </form>
-                <div id="total_count">Jobs in real time.</div>
-        </div>
-      </div>
-      <div id="ft">
-          <div id="bottom_nav" style="text-align: center;"><div style="margin-bottom: 20px"><a href="/findjobs">Browse Jobs</a></div><p style="font-size: smaller;">©2017 Jobs AU</p></div>
-      </div>
-    </div>
+  <div id="main"></div>
 </body>
 </html>
