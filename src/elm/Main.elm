@@ -189,16 +189,6 @@ view model =
     in
         div []
             [ Header.render
-            , Html.form []
-                [ Grid.container []
-                    [ Grid.row []
-                        [ Grid.col [ Col.md2 ] [ h1 [] [ text "TechJobs Australia" ] ]
-                        , Grid.col [ Col.md3 ] [ label [] [ text "What" ], input [ type_ "text", value model.searchRequest.query ] [] ]
-                        , Grid.col [ Col.md3 ] [ label [] [ text "Where" ], input [ type_ "text", value locationText ] [] ]
-                        , Grid.col [ Col.md1 ] [ input [ type_ "submit" ] [ text "Submit" ] ]
-                        ]
-                    ]
-                ]
             , Grid.container []
                 [ Grid.row []
                     [ Grid.col [ Col.md2 ] []
