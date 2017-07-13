@@ -36,16 +36,32 @@ type alias Model =
     }
 
 
+parseSearchUrl : Navigation.Location -> Route
+parseSearchUrl location =
+    case parsePath route location of
+        Nothing ->
+            case SeoParser.parsePath location of
+                SeoParser.Category cat ->
+                    Search (Just cat) Nothing
+
+                SeoParser.Location loc ->
+                    Search Nothing (Just loc)
+
+                SeoParser.CategoryInLocation cat loc ->
+                    Search (Just cat) (Just loc)
+
+                SeoParser.NotSeo ->
+                    NotSearch
+
+        Just route ->
+            route
+
+
 init : Navigation.Location -> ( Model, Cmd Msg )
 init location =
     let
         parsedRoute =
-            case parsePath route location of
-                Nothing ->
-                    SeoParser.parsePath location
-
-                Just route ->
-                    route
+            parseSearchUrl location
 
         kw =
             case parsedRoute of
@@ -55,16 +71,7 @@ init location =
                 Search (Just value) _ ->
                     value
 
-                SeoParser.Category category ->
-                    category
-
-                SeoParser.Location location ->
-                    "N/A"
-
-                SeoParser.CategoryInLocation category _ ->
-                    category
-
-                SeoParser.NotSeo ->
+                NotSearch ->
                     "NotSearch"
 
         loc =
@@ -75,16 +82,7 @@ init location =
                 Search _ (Just value) ->
                     value
 
-                SeoParser.Location location ->
-                    location
-
-                SeoParser.Category _ ->
-                    "N/A"
-
-                SeoParser.CategoryInLocation _ location ->
-                    location
-
-                SeoParser.NotSeo ->
+                NotSearch ->
                     "NotSearch"
     in
         ( { keywords = kw, location = loc }, Cmd.none )

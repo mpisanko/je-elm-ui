@@ -29,15 +29,15 @@ parsePath location =
             [ cat, loc ] ->
                 CategoryInLocation cat loc
 
-            [ _ ] ->
+            _ ->
                 case split "jobs-in-" url of
-                    [ "" :: loc ] ->
+                    [ "", loc ] ->
                         Location loc
 
-                    [ _ ] ->
+                    _ ->
                         case split "-jobs" url of
-                            [ cat :: "" ] ->
+                            [ cat, "" ] ->
                                 Category cat
 
-                            [ _ ] ->
+                            _ ->
                                 NotSeo
