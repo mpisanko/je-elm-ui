@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Navigation
 import UrlParser exposing ((<?>), (</>), s, stringParam, Parser, map, parsePath)
+import SeoParser
 import Bootstrap.Grid as Grid
 import Request.Location as LocationRequest
 import Data.Location exposing (..)
@@ -25,20 +26,12 @@ main =
 
 type Route
     = Search (Maybe String) (Maybe String)
-    | Category String
-    | Location String
-    | CategoryInLocation String String
     | NotSearch
 
 
 route : Parser (Route -> a) a
 route =
-    UrlParser.oneOf
-        [ UrlParser.map Search (UrlParser.s "j" <?> stringParam "q" <?> stringParam "l")
-        , UrlParser.map Category (UrlParser.string </> UrlParser.s "-jobs")
-        , UrlParser.map Location (UrlParser.s "jobs-in-" </> UrlParser.string)
-        , UrlParser.map CategoryInLocation (UrlParser.string </> UrlParser.s "-jobs-in-" </> UrlParser.string)
-        ]
+    UrlParser.map Search (UrlParser.s "j" <?> stringParam "q" <?> stringParam "l")
 
 
 type alias Model =
@@ -48,16 +41,32 @@ type alias Model =
     }
 
 
+parseSearchUrl : Navigation.Location -> Route
+parseSearchUrl location =
+    case parsePath route location of
+        Nothing ->
+            case SeoParser.parsePath location of
+                SeoParser.Category cat ->
+                    Search (Just cat) Nothing
+
+                SeoParser.Location loc ->
+                    Search Nothing (Just loc)
+
+                SeoParser.CategoryInLocation cat loc ->
+                    Search (Just cat) (Just loc)
+
+                SeoParser.NotSeo ->
+                    NotSearch
+
+        Just route ->
+            route
+
+
 init : Navigation.Location -> ( Model, Cmd Msg )
 init location =
     let
         parsedRoute =
-            case parsePath route location of
-                Nothing ->
-                    NotSearch
-
-                Just route ->
-                    route
+            parseSearchUrl location
 
         kw =
             case parsedRoute of
@@ -67,17 +76,8 @@ init location =
                 Search (Just value) _ ->
                     value
 
-                Category category ->
-                    category
-
-                Location location ->
-                    "N/A"
-
-                CategoryInLocation category _ ->
-                    category
-
                 NotSearch ->
-                    "NotSearchs"
+                    "NotSearch"
 
         loc =
             case parsedRoute of
@@ -86,15 +86,6 @@ init location =
 
                 Search _ (Just value) ->
                     value
-
-                Location location ->
-                    location
-
-                Category _ ->
-                    "N/A"
-
-                CategoryInLocation _ location ->
-                    location
 
                 NotSearch ->
                     "NotSearch"
