@@ -7,7 +7,6 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <link rel="stylesheet" media="screen" href="//cdn1.jora.com/assets/application-71694b230191a2c6b5e28c1d780dba3a.css" />
 
     <title>TechJobs Australia</title>
 
@@ -107,10 +106,6 @@ label {
     left: 0;
     right: 0;
     z-index: -1; } }
-
-#account {
-  padding: 10px 30px 10px 28px;
-  float: right; }
 
 #account .pull_right {
   float: right; }
@@ -541,7 +536,9 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, inp
 #account.new {
   position: absolute;
   right: 20px;
-  top: 30px; }
+  top: 30px;
+  box-sizing: content-box;
+}
 
 #account.new .account-nav {
   display: inline-block; }
@@ -580,46 +577,6 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, inp
 
 [data-display-message-x-times] {
   display: none; }
-
-#account.new {
-  position: absolute;
-  right: 20px;
-  top: 30px; }
-
-#account.new .account-nav {
-  display: inline-block; }
-
-#account.new .account-nav a.text-link {
-  text-decoration: none;
-  font-weight: 700;
-  text-transform: capitalize;
-  color: #666;
-  margin-left: 0; }
-
-#account.new .account-nav a.text-link:hover {
-  border-bottom: 1px solid #333;
-  color: #333; }
-
-#account.new .account-nav a.post-job {
-  font-weight: 500; }
-
-#account.new .account-nav a.post-job strong {
-  font-weight: 700; }
-
-#account.new .account-nav > ul > li {
-  display: inline-block;
-  text-align: center;
-  margin-left: 20px;
-  height: 26px;
-  line-height: 25px;
-  position: relative; }
-
-#account.new .account-nav .login.button {
-  margin-right: 0; }
-
-#account.new .account-nav .more-menus-link {
-  position: relative;
-  top: 2px; }
 
 #browse_jobs #searchform {
   border-bottom: none; }
