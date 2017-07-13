@@ -1,13 +1,12 @@
 module Request.Search exposing (..)
 
-import Data.SearchResultsState as SR
+import Data.SearchResults as SR
 import Http
-import Data.IpAddress exposing (..)
 import Data.SearchRequest as SearchRequest
 import Util exposing (typeToString)
 
 
-performSearch : SearchRequest.SearchRequest -> Http.Request SR.SearchResultsState
+performSearch : SearchRequest.SearchRequest -> Http.Request SR.SearchResults
 performSearch sr =
     let
         d =
@@ -44,9 +43,7 @@ performSearch sr =
                 ++ deDupMode
                 ++ "&ps="
                 ++ ps
-                ++ "&fi=6&ip="
-                ++ sr.ipAddress
-                ++ "&li="
+                ++ "&fi=6&li="
                 ++ li
                 ++ "&k="
                 ++ (Http.encodeUri sr.query)

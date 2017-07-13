@@ -1,6 +1,5 @@
 module Data.SearchRequest exposing (..)
 
-import Data.IpAddress exposing (IpAddress)
 import Data.Location exposing (Location)
 
 
@@ -12,7 +11,6 @@ type alias SearchRequest =
     , origin : Origin
     , country : Country
     , deDupMode : DeDuplicationMode
-    , ipAddress : IpAddress
     , pageSize : Int
     }
 
@@ -35,4 +33,4 @@ type DeDuplicationMode
 
 init : SearchRequest
 init =
-    SearchRequest "" "" Nothing False Jora AU Off "" 20
+    SearchRequest "" "" Nothing False Jora AU Off 20
