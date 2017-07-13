@@ -5,6 +5,10 @@ import Html.Attributes exposing (..)
 import Navigation
 import UrlParser exposing ((<?>), (</>), s, stringParam, Parser, map, parsePath)
 import Bootstrap.Grid as Grid
+import Request.Location as LocationRequest
+import Data.Location exposing (..)
+import Http
+import Data.Location as Location
 
 
 -- APP
@@ -40,6 +44,7 @@ route =
 type alias Model =
     { keywords : String
     , location : String
+    , locationId : String
     }
 
 
@@ -94,7 +99,7 @@ init location =
                 NotSearch ->
                     "NotSearch"
     in
-        ( { keywords = kw, location = loc }, Cmd.none )
+        ( { keywords = kw, location = loc, locationId = "" }, Http.send InitialLocationResolution (LocationRequest.suggest loc "AU") )
 
 
 
@@ -103,6 +108,7 @@ init location =
 
 type Msg
     = UrlChange Navigation.Location
+    | InitialLocationResolution (Result Http.Error (List Location))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -110,6 +116,31 @@ update msg model =
     case msg of
         UrlChange location ->
             ( model, Cmd.none )
+
+        InitialLocationResolution (Ok locations) ->
+            let
+                filteredLocations =
+                    (Location.emptyLocationFilter locations)
+
+                maybeLocation =
+                    List.head filteredLocations
+
+                location =
+                    case maybeLocation of
+                        Nothing ->
+                            { id = "", value = "" }
+
+                        Just loc ->
+                            loc
+            in
+                ( { model | locationId = location.id, location = location.value }, Cmd.none )
+
+        InitialLocationResolution (Err err) ->
+            let
+                x =
+                    Debug.log "error" err
+            in
+                ( model, Cmd.none )
 
 
 
